@@ -2,28 +2,22 @@ import Image from "next/image";
 import styles from "./page.module.css";
 
 function FruitsContainer(props){
+
+  const containerItem = [];
+  for(let i = 0 ; i < props.dataName.items.length;i++){
+  containerItem.push(<Items itemData = {props.dataName.items[i]}></Items>)
+  }
+
   return( <div className="fruitsContainer">
-    <CategoryName dataCategory={props.dataCategory}></CategoryName>
-    <Items></Items>
-    <Items></Items>
-    <Items></Items>
+    <CategoryName dataCateName = {props.dataName.categoryName}></CategoryName>
+    {containerItem}
   </div>)
 }
 function CategoryName(props){
   return (
    <div className="categoryName">
-    <h1>{props.dataCategory}</h1>
+    <h1>{props.dataCateName}</h1>
    </div>
-  )
-}
-function Items(props){
-  return(
-    <div className="fruitsItems">
-      <div className="containerMain">
-        <p>Name</p>
-        <p>Price</p>
-      </div>
-    </div>
   )
 }
 function SearchItems(props){
@@ -32,11 +26,15 @@ function SearchItems(props){
     <input placeholder="Search..."/>
     <div className="detailsA">
       <input type="checkbox"/>
-      <p>Ony show products in stock</p>
+      <p>Only show products in stock</p>
     </div>
   </div>
   )
 }
+
+
+
+
 function Title(props){
   return (
     <div className="title">
@@ -47,26 +45,69 @@ function Title(props){
    </div>
   )
 }
+function Items(props){
 
+  return(
+    <div className="fruitsItems">
+      <div className="containerMain">
+        <p>{props.itemData.name}</p>
+        <p>{props.itemData.price}</p>
+      </div>
+    </div>
+  )
+}
 const SIMPLE_DATA = [
   {
     categoryName: "Fruits",
-    items: []
+    items: [
+        {
+          name: 'Apple',
+          price : '$1'
+        },
+        {
+          name: 'Dragonfruit',
+          price : '$1'
+            },
+        {
+          name: 'Passionfruit',
+          price : '$2'
+        }
+    ]
   },
   {
-    categoryName: "Fruits",
-    items: []
-  }
+    categoryName: "Vegetables",
+    items: [
+        {
+          name: 'Spinach',
+          price : '$2'
+        },
+        {
+          name: 'Pumpkin',
+          price : '$4'
+            },
+        {
+          name: 'Peas',
+          price : '$1'
+        }
+    ]
+  },
+
 ]
 
-const DATA = [  { category: "Fruits", price: "$1", stocked: true, name: "Apple" }, 
-   { category: "Fruits", price: "$1", stocked: true, name: "Dragonfruit" },  
-   { category: "Fruits", price: "$2", stocked: false, name: "Passionfruit" },  
-   { category: "Vegetables", price: "$2", stocked: true, name: "Spinach" },  
-   { category: "Vegetables", price: "$4", stocked: false, name: "Pumpkin" }, 
-   { category: "Vegetables", price: "$1", stocked: true, name: "Peas" }]
+
+
 
 export default function Home() {
+
+  const containerCategories = [];
+
+  SIMPLE_DATA.map((el) => {
+  console.log(el)
+  });
+
+  for(let i = 0 ; i < SIMPLE_DATA.length ; i++){
+    containerCategories.push(<FruitsContainer dataName = {SIMPLE_DATA[i]}></FruitsContainer>)
+  }
 
  return ( <div className="bodyContainer">
    <div className="container">
@@ -74,9 +115,8 @@ export default function Home() {
        <SearchItems/>
       </div>
       <Title/>
-      <FruitsContainer dataCategory = {DATA[0].category}/>
-      
+      {containerCategories}
    </div>
 
-</div>)
+</div>);
 }
